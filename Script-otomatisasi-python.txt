@@ -1,0 +1,46 @@
+import telnetlib
+import os
+import datetime
+
+def osdir(pet):
+    if not os.path.exists(pet):
+        os.mkdir(pet)
+    return pet
+
+def osfile(file):
+    if not os.path.exists(file):
+        f=open(file, "w+")
+        f.close()
+    return file
+
+host="localhost"
+port=23
+tn = telnetlib.Telnet(host,port)
+now = datetime.date.today()
+besok = now + datetime.timedelta(days=1)
+path = "D:\Data ALE Sumedang"
+
+path = osdir(os.path.join(path,now.strftime("%Y")))
+path = osdir(os.path.join(path,now.strftime("%m")))
+path = osdir(os.path.join (path,now.strfhour("%H")))
+path = osfile(os.path.join(path,"ALESMD"+now.strftime("%d")+now.strftime("%m")+now.strftime("%Y")+now.strfhour("%H")".txt"))
+while True:
+    now = datetime.date.today()
+    if besok == now:
+        break
+    str_all = tn.read_until(b"RELEASED]\n").decode("utf-8")
+    with open(path, 'r+') as fd:
+        lines = fd.readlines()
+        lines = sorted(lines, reverse=True)
+        fd.seek(0)
+        fd.writelines(line for line in lines if line.strip())
+        fd.truncate()
+    
+tn.close
+Print('selesai')
+
+    
+
+
+
+    
